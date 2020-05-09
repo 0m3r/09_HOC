@@ -11,9 +11,9 @@ const withFilter = () => BaseComponent => {
 
     handleChange = ({ target }) => this.setState({ filter: target.value });
 
-    filteredResults = () => {
+    filteredResults = (results) => {
+      results = results || [];
       let { filter } = this.state;
-      let { results } = this.props;
 
       if (filter) {
         results = results.filter(item =>

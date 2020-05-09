@@ -5,9 +5,20 @@ import withFetch from './hoc/withFetch';
 import withFilter from './hoc/withFilter';
 
 class App extends Component {
+    constructor(props) {
+      super(props);
+      this.handleChange = this.handleChange.bind(this);
+    }
+
+  handleChange = function(target) {
+    this.props.handleChange && this.props.handleChange(target);
+  };
 
   get getResults() {
-    return <PersonList results={this.props.filteredResults()} />;
+    let results = this.props.filteredResults ?
+        this.props.filteredResults(this.props.results) : this.props.results;
+
+    return <PersonList results={results} />;
   }
 
   render() {
@@ -15,7 +26,7 @@ class App extends Component {
       <div className="container pt-3">
         <div className="row">
           <div className="col-md-3">
-            <Filter handleChange={this.props.handleChange} />
+            <Filter handleChange={this.handleChange} />
           </div>
           <div className="offset-md-1 col-md-4">{this.getResults}</div>
         </div>
@@ -26,4 +37,7 @@ class App extends Component {
 
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
-export default withFetch(apiUrl)(withFilter()(App));
+// export default withFilter()(App);
+// export default withFetch(apiUrl)(App);
+// export default withFetch(apiUrl)(withFilter()(App));
+export default withFilter()(withFetch(apiUrl)(App));
