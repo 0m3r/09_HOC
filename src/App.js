@@ -1,23 +1,20 @@
 import React, { Component } from "react";
 import PersonList from "./components/persons/PersonList";
 import Filter from "./components/Filter";
+import withFetch from './hoc/withFetch';
+import withFilter from './hoc/withFilter';
 
 class App extends Component {
   state = {
-    results: [],
     filter: ""
   };
-
-  async componentDidMount() {
-    const r = await fetch('https://jsonplaceholder.typicode.com/users');
-    const results = await r.json();
-    this.setState({ results });
-  }
 
   handleChange = ({ target }) => this.setState({ filter: target.value });
 
   get getResults() {
-    let { results, filter } = this.state;
+    let { filter } = this.state;
+    let { results } = this.props;
+
     if (filter) {
       results = results.filter(item =>
         item.name.toLowerCase().includes(filter.toLowerCase())
@@ -40,4 +37,7 @@ class App extends Component {
   }
 }
 
-export default App;
+const apiUrl = 'https://jsonplaceholder.typicode.com/users';
+
+// export default withFetch(apiUrl)(App);
+export default withFilter()(withFetch(apiUrl)(App));
