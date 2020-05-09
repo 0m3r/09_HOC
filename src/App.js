@@ -9,8 +9,8 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const r = await fetch("https://swapi.co/api/people/?format=json");
-    const { results } = await r.json();
+    const r = await fetch('https://jsonplaceholder.typicode.com/users');
+    const results = await r.json();
     this.setState({ results });
   }
 
